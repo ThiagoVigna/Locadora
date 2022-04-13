@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Locadora.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220410170915_Tabelas")]
-    partial class Tabelas
+    [Migration("20220412175222_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,7 @@ namespace Locadora.Migrations
                     b.Property<int>("ClassificacaoIndicativa")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Lancamento")
+                    b.Property<bool>("Lancamento")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Titulo")
@@ -76,9 +76,23 @@ namespace Locadora.Migrations
                     b.Property<int>("Id_Filme")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("LamcamentoId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("LamcamentoId");
+
                     b.ToTable("Locacoes");
+                });
+
+            modelBuilder.Entity("Locadora.Models.Locacao", b =>
+                {
+                    b.HasOne("Locadora.Models.Filme", "Lamcamento")
+                        .WithMany()
+                        .HasForeignKey("LamcamentoId");
+
+                    b.Navigation("Lamcamento");
                 });
 #pragma warning restore 612, 618
         }

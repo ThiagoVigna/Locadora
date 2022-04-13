@@ -4,38 +4,29 @@ using Locadora.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Locadora.Controllers
 {
-  [ApiController]
-  [Route("v1")]
-  public class ClienteController : ControllerBase
+  public class FilmeController : ControllerBase
   {
-    private readonly AppDbContext _context;
-    public ClienteController(AppDbContext context)
-    {
-      _context = context;
-    }
-   
     [HttpGet]
-    [Route("Cliente")]
+    [Route("Filme")]
     public async Task<IActionResult> GetAsync([FromServices] AppDbContext context)
     {
       var todos = await context
-        .Clientes
+        .Filmes
         .AsNoTracking()
         .ToListAsync();
       return Ok(todos);
     }
 
     [HttpGet]
-    [Route("Cliente/{id}")]
+    [Route("Filme/{id}")]
     public async Task<IActionResult> GetByIdAsync([FromServices] AppDbContext context, [FromRoute] int id)
     {
       var todo = await context
-        .Clientes
+        .Filmes
         .AsNoTracking()
         .FirstOrDefaultAsync(x => x.Id == id);
       return todo == null
@@ -43,21 +34,21 @@ namespace Locadora.Controllers
         : Ok(todo);
     }
 
-    [HttpPost("Cliente")]
-    public async Task<IActionResult> PostAsync([FromServices] AppDbContext context, [FromBody] CreateClienteViewModel model)
+    [HttpPost("Filme")]
+    public async Task<IActionResult> PostAsync([FromServices] AppDbContext context, [FromBody] CreateFilmeViewModel model)
     {
       if (!ModelState.IsValid)
         return BadRequest();
-      var todo = new Cliente
+      var todo = new Filme
       {
-        Nome= model.Nome,
-        CPF = model.CPF,
-        DataNascimento = model.DataNascimento,
+        Titulo = model.Titulo,
+        ClassificacaoIndicativa = model.ClassificacaoIndicativa,
+        Lancamento = model.Lancamento,
       };
 
       try
       {
-        await context.Clientes.AddAsync(todo);
+        await context.Filmes.AddAsync(todo);
         await context.SaveChangesAsync();
         return Created($"v1/todos/{todo.Id}", todo);
       }
@@ -67,14 +58,14 @@ namespace Locadora.Controllers
       }
     }
 
-    [HttpPut("Cliente/{id}")]
-    public async Task<IActionResult> PutAsync([FromServices] AppDbContext context, [FromBody] Cliente model, [FromRoute] int id)
+    [HttpPut("Filme/{id}")]
+    public async Task<IActionResult> PutAsync([FromServices] AppDbContext context, [FromBody] CreateFilmeViewModel model, [FromRoute] int id)
     {
       if (!ModelState.IsValid)
         return BadRequest();
 
       var todo = await context
-        .Clientes
+        .Filmes
         .FirstOrDefaultAsync(x => x.Id == id);
 
       if (todo == null) return NotFound();
@@ -82,7 +73,7 @@ namespace Locadora.Controllers
       try
       {
         todo.Id = model.Id;
-        context.Clientes.Update(todo);
+        context.Filmes.Update(todo);
         await context.SaveChangesAsync();
         return Ok(todo);
       }
@@ -92,16 +83,16 @@ namespace Locadora.Controllers
       }
     }
 
-    [HttpDelete("Cliente/{id}")]
+    [HttpDelete("Filme/{id}")]
     public async Task<IActionResult> DeleteAsync([FromServices] AppDbContext context, [FromRoute] int id)
     {
       var todo = await context
-        .Clientes
+        .Filmes
         .FirstOrDefaultAsync(x => x.Id == id);
 
       try
       {
-        context.Clientes.Remove(todo);
+        context.Filmes.Remove(todo);
         await context.SaveChangesAsync();
 
         return Ok();

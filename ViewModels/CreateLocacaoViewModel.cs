@@ -9,6 +9,5 @@ namespace Locadora.ViewModels
     public int Id_Cliente { get; set; }
     [Required]
     public int Id_Filme { get; set; }
-    public Filme Lancamento { get; set; }
   }
 }

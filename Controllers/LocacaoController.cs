@@ -31,10 +31,8 @@ namespace Locadora.Controllers
       var todo = await context
         .Locacoes
         .AsNoTracking()
-        .FirstOrDefaultAsync(x => x.Id == id);
-      return todo == null
-        ? NotFound()
-        : Ok(todo);
+        .FirstOrDefaultAsync(x => x.Id == id);      
+      return todo == null ? NotFound() : Ok(todo);
     }
 
     [HttpPost("Locacoes")]
@@ -49,7 +47,6 @@ namespace Locadora.Controllers
       {
         Id_Cliente = model.Id_Cliente,
         Id_Filme = model.Id_Filme,
-        Lamcamento = model.Lancamento,
         DataLocacao = DateTime.Now,
         DataDevolucao = hoje.AddDays(3),
       };

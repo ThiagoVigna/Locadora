@@ -5,16 +5,32 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.Swagger;
-
+using Pomelo.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using System.Configuration;
 
 namespace Locadora
 {
   public class Startup
   {
+    private readonly IConfiguration _config;
+    public Startup(IConfiguration config)
+    {
+      _config = config;
+    }
+
     public void ConfigureServices(IServiceCollection services)
     {
+      string mySqlConnection = 
+      _config.GetConnectionString("DefaultConnection");
+
+      services.AddDbContextPool<AppDbContext>(options =>
+          options.UseMySql(mySqlConnection,
+                ServerVersion.AutoDetect(mySqlConnection)));
+
       services.AddControllers();
-      services.AddDbContext<AppDbContext>();
+      //services.AddDbContext<AppDbContext>();
       services.AddSwaggerGen(c =>
       {
         c.SwaggerDoc("v1", new OpenApiInfo { Title = "Locadora", Version = "v1" });
@@ -23,14 +39,7 @@ namespace Locadora
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
-      //Ativa o Swagger
       app.UseSwagger();
-
-      // Ativa o Swagger UI
-      //app.UseSwaggerUI(opt =>
-      //{
-      //  opt.SwaggerEndpoint("/swagger/v1/swagger.json", "LocadoraAPI V1");
-      //});
 
       app.UseSwaggerUI(c =>
       {
