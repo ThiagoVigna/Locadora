@@ -22,6 +22,11 @@ namespace Locadora
 
     public void ConfigureServices(IServiceCollection services)
     {
+      services.AddCors(options =>
+      {
+        options.AddPolicy("CorsPolicy", builders => builders.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().Build());
+      });
+
       string mySqlConnection = 
       _config.GetConnectionString("DefaultConnection");
 
@@ -52,6 +57,7 @@ namespace Locadora
       {
         app.UseDeveloperExceptionPage();
       }
+      app.UseCors("CorsPolicy");
 
       app.UseRouting();
 
