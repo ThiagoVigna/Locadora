@@ -1,10 +1,7 @@
 # Structure
 
     - Locadora => WebApi com o serviço REST (via Swagger)
-    - MovieStore.Core => Class Library para a camada do Domínio da Aplicação
-    - MovieStore.Data => Class Library para a camada de Dados da Aplicação (EF, Dapper)
-    - MovieStore.Services => Class Library para a camada de Services da Aplicação (regras de negócio)
-
+      
 # Get Started:
 
 1 - Faça o restore dos projetos (dotnet restore)
