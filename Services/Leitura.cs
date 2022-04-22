@@ -5,11 +5,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Locadora.Models
+namespace Locadora.Services
 {
     public class Leitura
     {
-        public static IList()
+        public string leitura()
         {
             var path = @"/PROJETOS/MinhaLocadora/Reader/Filmes.csv";
             var reader = new StreamReader(File.OpenRead(path));
@@ -18,15 +18,8 @@ namespace Locadora.Models
             (dynamic indexId, dynamic indexTitulo, dynamic indexClassificacaoIndicativa, dynamic indexLancamento) = SetColunsIndex(coluns);
             var movies = BuildMovieList(reader, indexId, indexTitulo, indexClassificacaoIndicativa, indexLancamento);
 
-            foreach (var movie in movies)
-            {
-                return($"ID: {movie.Id}, Titulo: {movie.Titulo}, Indicação: {movie.ClassificacaoIndicativa}, Lançamento: {movie.Lancamento} ");
-
-            }
             return movies;
         }
-
-
 
         private static (int, int, int, int) SetColunsIndex(string[] coluns)
         {
@@ -73,7 +66,7 @@ namespace Locadora.Models
             while ((line = reader.ReadLine()) != null)
             {
                 var values = line.Split(';');
-                readerModel = new CreateFilmeViewModel();
+                readerModel = new CreateFilmeViewModel(indexId,indexTitulo,indexClassificacaoIndicativa,indexLancamento);
 
                 if (indexId != -1)
                 {
@@ -104,7 +97,4 @@ namespace Locadora.Models
             return (movies);
         }
     }
-
-
-
 }

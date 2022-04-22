@@ -9,13 +9,27 @@ namespace Locadora.ViewModels
 {
   public class CreateFilmeViewModel
   {
-    [Key]
-    public int Id { get; set; }
-    [Required]
-    public string Titulo { get; set; }
-    [Required]
-    public int ClassificacaoIndicativa { get; set; }
-    [Required]
-    public bool Lancamento { get; set; }
-  }
+    //[Key]
+    public dynamic Id { get; set; }
+    //[Required]
+    public dynamic Titulo { get; set; }
+    //[Required]
+    public dynamic ClassificacaoIndicativa { get; set; }
+    //[Required]
+    public dynamic Lancamento { get; set; }
+
+        public CreateFilmeViewModel(dynamic indexId, dynamic indexTitulo, dynamic indexClassificacaoIndicativa, dynamic indexLancamento)
+        {
+            Id = indexId;
+            Titulo = indexTitulo;
+            ClassificacaoIndicativa = indexClassificacaoIndicativa;
+            Lancamento = indexLancamento;
+        }
+
+        public CreateFilmeViewModel()
+        {
+        }
+    }
+   
+
 }

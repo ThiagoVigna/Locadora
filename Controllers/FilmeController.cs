@@ -1,9 +1,11 @@
 ﻿using Locadora.Data;
 using Locadora.Models;
+using Locadora.Services;
 using Locadora.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Locadora.Controllers
@@ -19,6 +21,17 @@ namespace Locadora.Controllers
               .AsNoTracking()
               .ToListAsync();
             return Ok(todos);
+        }
+
+        [HttpGet]
+        [Route("Filme/lista")]
+        public Task<IList<Leitura>> GetListAsync(Leitura model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return (Task<IList<Leitura>>)(IList<Leitura>)BadRequest(ModelState);
+            }
+            return Leitura();
         }
 
         [HttpGet]
